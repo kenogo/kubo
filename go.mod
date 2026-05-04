@@ -272,6 +272,8 @@ require (
 	lukechampine.com/blake3 v1.4.1 // indirect
 )
 
+replace github.com/ipfs/boxo v0.39.0 => ../boxo
+
 // Exclude ancient +incompatible versions that confuse Dependabot.
 
 // These pre-Go-modules versions reference packages that no longer exist.
