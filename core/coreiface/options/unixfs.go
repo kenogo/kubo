@@ -54,6 +54,7 @@ type UnixfsAddSettings struct {
 	PreserveMtime       bool
 	Mode                os.FileMode
 	Mtime               time.Time
+	Provenance			string
 	IncludeEmptyDirs    bool
 	IncludeEmptyDirsSet bool
 }
@@ -101,6 +102,7 @@ func UnixfsAddOptions(opts ...UnixfsAddOption) (*UnixfsAddSettings, cid.Prefix, 
 		PreserveMtime:       false,
 		Mode:                0,
 		Mtime:               time.Time{},
+		Provenance:          "",
 		IncludeEmptyDirs:    true, // default: include empty directories
 		IncludeEmptyDirsSet: false,
 	}
@@ -413,6 +415,14 @@ func (unixfsOpts) Mtime(seconds int64, nsecs uint32) UnixfsAddOption {
 			return errors.New("mtime nanoseconds must be in range [1, 999999999]")
 		}
 		settings.Mtime = time.Unix(seconds, int64(nsecs))
+		return nil
+	}
+}
+
+// Provenance is W3C Prov data in JSON format
+func (unixfsOpts) Provenance(provenance string) UnixfsAddOption {
+	return func(settings *UnixfsAddSettings) error {
+		settings.Provenance = provenance
 		return nil
 	}
 }

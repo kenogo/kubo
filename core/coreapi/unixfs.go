@@ -185,6 +185,7 @@ func (api *UnixfsAPI) Add(ctx context.Context, files files.Node, opts ...options
 	fileAdder.PreserveMtime = settings.PreserveMtime
 	fileAdder.FileMode = settings.Mode
 	fileAdder.FileMtime = settings.Mtime
+	fileAdder.Provenance = settings.Provenance
 	if settings.IncludeEmptyDirsSet {
 		fileAdder.IncludeEmptyDirs = settings.IncludeEmptyDirs
 	}

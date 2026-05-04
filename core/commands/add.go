@@ -497,7 +497,7 @@ https://github.com/ipfs/kubo/blob/master/docs/config.md#import
 
 		if provenance != "" {
 			fmt.Fprintf(os.Stdout, "Adding provenance data %s\n", provenance)
-			// TODO Actually add the provenance data
+			opts = append(opts, options.Unixfs.Provenance(provenance))
 		}
 
 		if cidVerSet {

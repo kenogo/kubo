@@ -98,6 +98,7 @@ type Adder struct {
 	PreserveMtime    bool
 	FileMode         os.FileMode
 	FileMtime        time.Time
+	Provenance		 string
 	IncludeEmptyDirs bool
 }
 
@@ -154,6 +155,7 @@ func (adder *Adder) add(reader io.Reader) (ipld.Node, error) {
 		CidBuilder:  adder.CidBuilder,
 		FileMode:    adder.FileMode,
 		FileModTime: adder.FileMtime,
+		Provenance:  adder.Provenance,
 	}
 
 	db, err := params.New(chnk)

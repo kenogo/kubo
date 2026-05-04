@@ -20,6 +20,7 @@ type AddEvent struct {
 	Mode       os.FileMode `json:",omitempty"`
 	Mtime      int64       `json:",omitempty"`
 	MtimeNsecs int         `json:",omitempty"`
+	Provenance string      `json:",omitempty"`
 }
 
 // FileType is an enum of possible UnixFS file types.
