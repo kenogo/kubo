@@ -68,6 +68,7 @@ const (
 	modeOptionName            = "mode"
 	mtimeOptionName           = "mtime"
 	mtimeNsecsOptionName      = "mtime-nsecs"
+	provenanceOptionName      = "provenance"
 	fastProvideRootOptionName = "fast-provide-root"
 	fastProvideDAGOptionName  = "fast-provide-dag"
 	fastProvideWaitOptionName = "fast-provide-wait"
@@ -281,6 +282,7 @@ https://github.com/ipfs/kubo/blob/master/docs/config.md#import
 		cmds.UintOption(modeOptionName, "Custom POSIX file mode to store in created UnixFS entries. WARNING: experimental, forces dag-pb for root block, disables raw-leaves"),
 		cmds.Int64Option(mtimeOptionName, "Custom POSIX modification time to store in created UnixFS entries (seconds before or after the Unix Epoch). WARNING: experimental, forces dag-pb for root block, disables raw-leaves"),
 		cmds.UintOption(mtimeNsecsOptionName, "Custom POSIX modification time (optional time fraction in nanoseconds)"),
+		cmds.StringOption(provenanceOptionName, "W3C PROV data in JSON format"),
 		cmds.BoolOption(fastProvideRootOptionName, "Immediately provide root CID to DHT in addition to regular queue, for faster discovery. Default: Import.FastProvideRoot"),
 		cmds.BoolOption(fastProvideDAGOptionName, "Walk and provide the full DAG according to Provide.Strategy immediately after add. Default: Import.FastProvideDAG"),
 		cmds.BoolOption(fastProvideWaitOptionName, "Block until the immediate provide completes before returning. Default: Import.FastProvideWait"),
@@ -355,6 +357,7 @@ https://github.com/ipfs/kubo/blob/master/docs/config.md#import
 		mode, _ := req.Options[modeOptionName].(uint)
 		mtime, _ := req.Options[mtimeOptionName].(int64)
 		mtimeNsecs, _ := req.Options[mtimeNsecsOptionName].(uint)
+		provenance, _ := req.Options[provenanceOptionName].(string)
 		fastProvideRoot, fastProvideRootSet := req.Options[fastProvideRootOptionName].(bool)
 		fastProvideDAG, fastProvideDAGSet := req.Options[fastProvideDAGOptionName].(bool)
 		fastProvideWait, fastProvideWaitSet := req.Options[fastProvideWaitOptionName].(bool)
@@ -490,6 +493,11 @@ https://github.com/ipfs/kubo/blob/master/docs/config.md#import
 			opts = append(opts, options.Unixfs.Mtime(mtime, uint32(mtimeNsecs)))
 		} else if mtimeNsecs != 0 {
 			return fmt.Errorf("option %q requires %q to be provided as well", mtimeNsecsOptionName, mtimeOptionName)
+		}
+
+		if provenance != "" {
+			fmt.Fprintf(os.Stdout, "Adding provenance data %s\n", provenance)
+			// TODO Actually add the provenance data
 		}
 
 		if cidVerSet {
