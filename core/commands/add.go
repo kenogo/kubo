@@ -423,9 +423,10 @@ https://github.com/ipfs/kubo/blob/master/docs/config.md#import
 			fastProvideDAG = false
 		}
 
-		// Storing optional mode or mtime (UnixFS 1.5) requires root block
-		// to always be 'dag-pb' and not 'raw'. Below adjusts raw-leaves setting, if possible.
-		if preserveMode || preserveMtime || mode != 0 || mtime != 0 {
+		// Storing optional mode or mtime (UnixFS 1.5) requires root block to
+		// always be 'dag-pb' and not 'raw'. Storing provenance data has the
+		// same requirement. Below adjusts raw-leaves setting, if possible.
+		if preserveMode || preserveMtime || mode != 0 || mtime != 0 || provenance != "" {
 			// Error if --raw-leaves flag was explicitly passed by the user.
 			// (let user make a decision to manually disable it and retry)
 			if rbset && rawblks {
